@@ -1,35 +1,34 @@
 const menuToggle = document.getElementById("menu-toggle");
 const mobileMenu = document.getElementById("mobile-menu");
 
-menuToggle.addEventListener("click", () => {
-    mobileMenu.classList.toggle("hidden");
-});
-
-// script.js
 document.addEventListener("DOMContentLoaded", () => {
-    // Fetch the header HTML
     fetch('header.html')
         .then(response => {
             if (!response.ok) {
-                throw new Error('Failed to load header');
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
             return response.text();
         })
         .then(data => {
-            // Insert the header HTML into the placeholder
-            document.getElementById('header-placeholder').innerHTML = data;
+            const placeholder = document.getElementById('header-placeholder');
+            if (placeholder) {
+                placeholder.innerHTML = data;
 
-            // Optional: Add event listener for mobile menu toggle
-            const menuToggle = document.getElementById("menu-toggle");
-            const mobileMenu = document.getElementById("mobile-menu");
-
-            if (menuToggle && mobileMenu) {
-                menuToggle.addEventListener("click", () => {
-                    mobileMenu.classList.toggle("hidden");
-                });
+                const menuToggle = document.getElementById('menu-toggle');
+                const mobileMenu = document.getElementById('mobile-menu');
+                if (menuToggle && mobileMenu) {
+                    menuToggle.addEventListener('click', () => {
+                        mobileMenu.classList.toggle('hidden');
+                    });
+                }
             }
         })
-        .catch(error => {
-            console.error('Error loading header:', error);
-        });
+        .catch(error => console.error('Error loading header:', error));
 });
+
+fetch('footer.html')
+  .then(response => response.text())
+  .then(data => {
+      document.getElementById('footer-container').innerHTML = data;
+  })
+  .catch(error => console.error('Error loading footer:', error));
